@@ -73,6 +73,7 @@ class TestBundleCodegen:
             BrickflowEnvVars.BRICKFLOW_MODE.value: Stage.deploy.value,
             BrickflowEnvVars.BRICKFLOW_ENV.value: "local",
             BrickflowEnvVars.BRICKFLOW_DEPLOYMENT_MODE.value: BrickflowDeployMode.BUNDLE.value,
+            BrickflowEnvVars.BRICKFLOW_PROJECT_PARAMS.value: '{"test": "test"}',
         },
     )
     @patch("brickflow.engine.task.get_job_id", return_value=12345678901234.0)
