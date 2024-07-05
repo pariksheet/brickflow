@@ -192,6 +192,14 @@ def bundle_env_set_options(f: Callable) -> Callable:
             ),
             help="The databricks profile to use for authenticating to databricks during deployment.",
         ),
+        click.option(
+            "--variables",
+            "-v",
+            default=None,
+            type=str,
+            callback=bind_env_var(BrickflowEnvVars.BRICKFLOW_PROJECT_PARAMS.value),
+            help="The project variables to pass to all tasks during deployment.",
+        ),
     ]
     for option in options:
         f = option(f)
