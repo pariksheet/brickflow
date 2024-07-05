@@ -380,7 +380,7 @@ class Context:
     ) -> Optional[str]:
         try:
             project_param = self.get_parameter(
-                BrickflowEnvVars.BRICKFLOW_PROJECT_PARAMS.value, debug="{}"
+                BrickflowEnvVars.BRICKFLOW_PROJECT_PARAMS.value.lower(), debug="{}"
             )
             project_param_dict = json.loads(str(project_param))
             return project_param_dict.get(key, debug)
