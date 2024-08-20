@@ -697,12 +697,20 @@ class DatabricksBundleCodegen(CodegenInterface):
     def proj_to_bundle(self) -> DatabricksAssetBundles:
         jobs = {}
         pipelines = {}  # noqa
+        selected_workflows = (
+            os.getenv(BrickflowEnvVars.BRICKFLOW_WORKFLOW_LIST.value, "").split(",")
+            if BrickflowEnvVars.BRICKFLOW_WORKFLOW_LIST.value in os.environ
+            else []
+        )
+
+        if self.env != BrickflowDefaultEnvs.LOCAL.value and selected_workflows:
+            raise ValueError(
+                "Cannot set BRICKFLOW_WORKFLOW_LIST in non-local environments"
+            )
+
         for workflow_name, workflow in self.project.workflows.items():
             if self.env == BrickflowDefaultEnvs.LOCAL.value:
-                selected_workflows = os.getenv(
-                    BrickflowEnvVars.BRICKFLOW_WORKFLOW_LIST.value
-                )
-                if selected_workflows and selected_workflows != workflow_name:
+                if selected_workflows and workflow_name not in selected_workflows:
                     continue
             git_ref = self.project.git_reference or ""
             ref_type = git_ref.split("/", maxsplit=1)[0]
